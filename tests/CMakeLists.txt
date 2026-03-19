@@ -1,15 +1,11 @@
 # Executale file with tests
 add_executable(tests
-    test_sequence.cpp
-    test_array_sequence.cpp
-    test_list_sequence.cpp
     test_dynamic_array.cpp
-    test_linked_list.cpp
 )
 
 target_link_libraries(tests
     PRIVATE
-    bit_lib # дает и seq_lib
+    matrix_lib 
     GTest::gtest_main # GTest + готовый main(), который запускает все тесты
     # Если хочешь писать main() сам — замени на GTest::gtest (без _main)
 )
