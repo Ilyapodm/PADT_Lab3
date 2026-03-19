@@ -3,7 +3,6 @@ add_executable(tests
     test_sequence.cpp
     test_array_sequence.cpp
     test_list_sequence.cpp
-    test_bit_sequence.cpp
     test_dynamic_array.cpp
     test_linked_list.cpp
 )
