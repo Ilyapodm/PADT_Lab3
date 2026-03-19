@@ -1,0 +1,111 @@
+#pragma once
+
+#include "matrix.hpp"
+#include <stdexcept>
+
+/*******************************************************************
+ * constructors
+ *******************************************************************/
+
+template <typename T>
+Matrix<T>::Matrix() : data{}, rows{0}, cols{0} {}
+
+template <typename T>
+Matrix<T>::Matrix(int rows, int cols) : data{checked_size(rows, cols)}, rows{rows}, cols{cols} {}
+
+template <typename T>
+Matrix<T>::Matrix(T* items, int rows, int cols) : data{items, checked_size(rows, cols)}, rows{rows}, cols{cols} {}
+
+template <typename T>
+Matrix<T>::Matrix(const Matrix<T> &other) {
+    this->data = other.data;
+    this->rows = other.rows;
+    this->cols = other.cols;
+}
+
+/*******************************************************************
+ * getters
+ *******************************************************************/
+
+template <typename T>
+const T& Matrix<T>::get(int i, int j) const {
+    if (i < 0 || j < 0 || i >= rows || j >= cols)
+        throw std::out_of_range("get: index out of range");
+
+    return data[i * cols + j];
+}
+
+template <typename T>
+int Matrix<T>::get_rows() const {
+    return rows;
+}
+
+template <typename T>
+int Matrix<T>::get_cols() const {
+    return cols;
+}
+
+/*******************************************************************
+ * operations
+ *******************************************************************/
+
+template <typename T>
+void Matrix<T>::set(int i, int j, const T &value) const {
+    if (i < 0 || j < 0 || i >= rows || j >= cols)
+        throw std::out_of_range("get: index out of range");
+    
+    data[i * cols + j] = value;
+}
+
+template <typename T>
+IMatrix<T>* Matrix<T>::add(const IMatrix<T> &other) const {
+    if (rows != other.rows || cols != other.cols)
+        throw std::invalid_argument("add: cols and rows must be the same");
+
+    Matrix<T> *result = new Matrix<T>();
+
+    try {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result->set(i, j, this->get(i, j) + other.get(i, j));
+            }
+        }
+    } catch(...) {
+        delete result;
+        throw;
+    }
+    
+    return result;
+}
+
+template <typename T>
+IMatrix<T>* Matrix<T>::mult_scalar(const T &value) const {
+    Matrix<T> *result = new Matrix<T>();
+
+    try {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result->set(i, j, this->get(i, j) * value);
+            }
+        }
+    } catch(...) {
+        delete result;
+        throw;
+    }
+    
+    return result;
+}
+
+/*******************************************************************
+ * utils
+ *******************************************************************/
+
+// use not to create invalid object and then destroy it. 
+// and also for rows * cols < 0 will be thrown dynamic_array 
+// fallback: will cause misunderstanding.
+template <typename T>
+int Matrix<T>::checked_size(int rows, int cols) {
+    if (rows < 0 || cols < 0)
+        throw std::invalid_argument("Matrix: rows and cols cannot be negative");
+    return rows * cols;
+}

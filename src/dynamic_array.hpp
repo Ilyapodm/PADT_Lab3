@@ -28,7 +28,10 @@ public:
     // (capacity == size -> capacity *= 2, size += 1)
     // does NOT decrease the capacity. Only if resize(0): totaly clear the buffer
     void resize(int new_size);  
-    
+
+    // operators
+    const T& operator[](int index) const;  // getter
+    T& operator[](int index);  // setter
 private:
     T *data;
     int size;      // means the number of elements (reachable ceils of array in memory)

@@ -123,7 +123,7 @@ void DynamicArray<T>::set(int index, const T& value) {
         throw std::out_of_range("set: Index out of range");
     }
     
-    data[index] = value;  // do not use try-catch because 
+    data[index] = value;
 }
 
 template <typename T>
@@ -180,4 +180,22 @@ void DynamicArray<T>::resize(int new_size) {
     data = new_data;
     size = new_size;
     capacity = new_capacity;
+}
+
+template <typename T>
+const T& DynamicArray<T>::operator[](int index) const {
+    if (index >= size || index < 0) {
+        throw std::out_of_range("operator[]: Index out of range");
+    }
+
+    return data[index];
+}
+
+template <typename T>
+T& DynamicArray<T>::operator[](int index) {
+    if (index >= size || index < 0) {
+        throw std::out_of_range("operator[]: Index out of range");
+    }
+    
+    return data[index];
 }

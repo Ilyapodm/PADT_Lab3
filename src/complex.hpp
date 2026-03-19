@@ -15,4 +15,5 @@ struct Complex{
         return {(re * o.re + im * o.im) / div, (im * o.re - re * o.im) / div};
     }
     bool operator==(const Complex &o) const { return re == o.re && im == o.im; }
+    //TODO реализовать оператор =
 };
