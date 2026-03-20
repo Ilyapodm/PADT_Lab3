@@ -35,3 +35,9 @@ struct Complex{
         return std::abs(a.re - b.re) < eps && std::abs(a.im - b.im) < eps;
     }
 };
+
+// abs interface for Complex<T>
+template <typename T>
+double magnitude(Complex<T> x) {
+    return x.abs();
+}
