@@ -4,6 +4,7 @@
 
 template <typename T>
 class IMatrix {
+    // T{} must be additive zero
 public:
     virtual ~IMatrix() {}
 

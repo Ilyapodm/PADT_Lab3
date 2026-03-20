@@ -25,7 +25,6 @@ public:
     IMatrix<T>* add(const IMatrix<T> &other) const override;
     IMatrix<T>* mult_scalar(const T &value) const override;
     double norm() const override;
-
 private:
     static int checked_size(int rows, int cols);
     int rows;
