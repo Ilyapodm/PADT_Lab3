@@ -20,11 +20,12 @@ public:
     int get_cols() const override;  // returns the number of "столбцов"
 
     // operations
-    void set(int i, int j, const T &value) const override;
+    void set(int i, int j, const T &value) override;
 
     IMatrix<T>* add(const IMatrix<T> &other) const override;
     IMatrix<T>* mult_scalar(const T &value) const override;
-    T norm() const override;
+    double norm() const override;
+
 private:
     static int checked_size(int rows, int cols);
     int rows;
