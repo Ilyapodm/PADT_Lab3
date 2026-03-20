@@ -7,7 +7,7 @@
 template <typename T>
 struct Complex{
     T re, im;
-    Complex(T re = 0, T im = 0) : re{re}, im{im} {}
+    Complex(T re = T{}, T im = T{}) : re{re}, im{im} {}
 
     // return by value for value tupes is normal
     Complex operator+(const Complex &o) const { return {re + o.re, im + o.im}; }
@@ -31,10 +31,13 @@ struct Complex{
     double abs() const { return std::sqrt(static_cast<double>(norm2())); }
     // use static_cast to return double 100%
 
-    bool approx_equal(const Complex<T> &a, const Complex<T> &b, double eps = 1e-9) {
-        return std::abs(a.re - b.re) < eps && std::abs(a.im - b.im) < eps;
-    }
+    
 };
+
+template <typename T>
+bool approx_equal(const Complex<T> &a, const Complex<T> &b, double eps = 1e-9) {
+    return std::abs(a.re - b.re) < eps && std::abs(a.im - b.im) < eps;
+}
 
 // abs interface for Complex<T>
 template <typename T>
