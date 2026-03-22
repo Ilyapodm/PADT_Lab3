@@ -2,6 +2,7 @@
 build/
 .cache/
 .changd
+cmake-build-debug/
 
 # C++ Compiled artifacts
 *.d

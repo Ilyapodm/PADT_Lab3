@@ -1,6 +1,7 @@
 #pragma once
 
 #include "matrix.hpp"
+#include "math_types.hpp"
 #include <stdexcept>
 #include <cmath>
 #include <climits>  // used for INT_MAX
@@ -59,6 +60,7 @@ void Matrix<T>::set(int i, int j, const T &value) {
     data[i * cols + j] = value;
 }
 
+//TODO переопределить add и mult_scalar для SquareMatrix, так как указатель Matrix<T>*
 template <typename T>
 IMatrix<T>* Matrix<T>::add(const IMatrix<T> &other) const {
     if (rows != other.get_rows() || cols != other.get_cols())

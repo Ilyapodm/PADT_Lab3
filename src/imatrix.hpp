@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cmath>
-
 template <typename T>
 class IMatrix {
     // T{} must be additive zero
@@ -25,8 +23,3 @@ public:
     const T& operator()(int i, int j) const { return get(i, j); }  // reading only
 };
 
-// abs interface for int, double and other T
-template <typename T>
-double magnitude(T x) {
-    return std::abs(static_cast<double>(x));
-}

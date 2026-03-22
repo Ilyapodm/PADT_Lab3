@@ -31,16 +31,9 @@ struct Complex{
     double abs() const { return std::sqrt(static_cast<double>(norm2())); }
     // use static_cast to return double 100%
 
-    
 };
 
 template <typename T>
 bool approx_equal(const Complex<T> &a, const Complex<T> &b, double eps = 1e-9) {
     return std::abs(a.re - b.re) < eps && std::abs(a.im - b.im) < eps;
-}
-
-// abs interface for Complex<T>
-template <typename T>
-double magnitude(Complex<T> x) {
-    return x.abs();
 }
