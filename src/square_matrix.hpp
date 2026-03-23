@@ -6,7 +6,7 @@ template <typename T>
 class SquareMatrix : public Matrix<T> {
 public:
     // constructors
-    explicit SquareMatrix(int n) : Matrix<T>(n, n) {}  // explicit to have no suprises with integers
+    explicit SquareMatrix(int n) : Matrix<T>(n, n) {}  // explicit to have no suprises with solo integers
     SquareMatrix(T* items, int n) : Matrix<T>(items, n, n) {}
     SquareMatrix(const SquareMatrix<T> &other) : Matrix<T>(other) {}
     ~SquareMatrix() override {}

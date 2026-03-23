@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 #include <stdexcept>
-#include <cmath>
 
 #include "square_matrix.hpp"
 #include "complex.hpp"
