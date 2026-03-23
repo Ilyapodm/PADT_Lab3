@@ -12,9 +12,9 @@
  * Fixture
  *******************************************************************/
 
-// fill matrix 0, 1, 2, 3...
+// fill matrix 0, 1, 2, 3... for numeric only (not complex)
 template <typename T>
-void fill_seq(Matrix<T>& m) {
+void fill_seq(Matrix<T> &m) {
     int k = 0;
     for (int i = 0; i < m.get_rows(); i++)
         for (int j = 0; j < m.get_cols(); j++)

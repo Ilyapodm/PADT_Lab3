@@ -62,6 +62,9 @@ void SquareMatrix<T>::swap_rows(int row1, int row2) {
     check_row(row1);
     check_row(row2);
 
+    if (row1 == row2)
+        return;
+
     T temp;
     for (int col = 0; col < this->get_cols(); col++) {
         temp = this->get(row1, col);
