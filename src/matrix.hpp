@@ -11,7 +11,7 @@ public:
     Matrix(int rows, int cols);
     Matrix(T* items, int rows, int cols);
     Matrix(const Matrix<T> &other);
-    ~Matrix() {}  // don't need to delete data, because it's not pointer
+    ~Matrix() override {}  // don't need to delete data, because it's not pointer
 
     // getters
     const T& get(int i, int j) const override;

@@ -57,10 +57,9 @@ void Matrix<T>::set(int i, int j, const T &value) {
     if (i < 0 || j < 0 || i >= rows || j >= cols)
         throw std::out_of_range("get: index out of range");
     
-    data[i * cols + j] = value;
+    data[i * cols + j] = value;  // operator = for T may throw
 }
 
-//TODO переопределить add и mult_scalar для SquareMatrix, так как указатель Matrix<T>*
 template <typename T>
 IMatrix<T>* Matrix<T>::add(const IMatrix<T> &other) const {
     if (rows != other.get_rows() || cols != other.get_cols())
