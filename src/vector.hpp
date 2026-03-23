@@ -6,6 +6,4 @@ template <typename T>
 class Vector : public Matrix<T> {
 public:
     
-private:
-
 };
