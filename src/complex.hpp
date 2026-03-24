@@ -8,6 +8,7 @@ template <typename T>
 struct Complex{
     T re, im;
     Complex(T re = T{}, T im = T{}) : re{re}, im{im} {}
+    Complex(T re) : re{re}, im{T{}} {}
 
     // return by value for value tupes is normal
     Complex operator+(const Complex &o) const { return {re + o.re, im + o.im}; }
