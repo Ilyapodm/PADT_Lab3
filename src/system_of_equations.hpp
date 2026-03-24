@@ -1,22 +1,34 @@
 #pragma once
 
+#include "vector.hpp"
+#include "square_matrix.hpp"
 #include <ostream>
 
+template <typename T>
 class SystemOfEquations {
 public:
+    // constructor
+    SystemOfEquations(const SquareMatrix<T>& A, const Vector<T>& b);
+    
 
-    // int get_number_variables() const {
-    //     return variable_vector.size();
-    // }
+    // getters
+    const SquareMatrix<T>& get_matrix() const;
+    const Vector<T>& get_rhs() const;  // returns b
+    int size() const;
 
-    // Методы решения СЛАУ
-    const std::vector<double>& solve_gauss();             // Стандартный метод Гаусса
-    const std::vector<double>& solve_gauss_with_pivot();  // Метод Гаусса с выбором ведущего элемента
-    const std::vector<double>& solve_lu();                // LU разложение
+    // methods to solute the SLAE
+    const Vector<T> &solve_gauss();
+    const Vector<T> &solve_gauss_with_pivot();  
+    const Vector<T> &solve_lu();                 
+
 private:
-    // std::vector<double> main_matrix;    // Главная матрица коэффициентов
-    // std::vector<char> variable_vector;  // Вектор столбец переменных
-    // std::vector<double> free_vector;    // Вектор столбец свободных членов
+    SquareMatrix<T> A;
+    Vector<T> b;    // vector col of free nums (rhs)
+
+    // LU-cache
+    bool lu_ready = false;
+    SquareMatrix<T> L;  // low triangle
+    SquareMatrix<T> U;  // high triangle
 };
 
 // std::ostream& operator<<(std::ostream &os, const SystemOfEquations &sys) {
