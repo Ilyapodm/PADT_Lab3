@@ -22,7 +22,7 @@ public:
         Matrix<T>::set(i, 0, value); 
     }
 
-    int size() const { 
+    int get_size() const { 
         return this->get_rows(); 
     }
 

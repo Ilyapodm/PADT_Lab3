@@ -68,8 +68,8 @@ const Vector<T>& SystemOfEquations<T>::get_rhs() const {
 }
 
 template <typename T>
-int SystemOfEquations<T>::size() const {
-    return A.get_cols();
+int SystemOfEquations<T>::get_size() const {
+    return A.get_size();
 }
 
 /*******************************************************************
@@ -107,17 +107,44 @@ void SystemOfEquations<T>::set_rhs(const Vector<T>& new_b) {
  *******************************************************************/
 
 template <typename T>
-const Vector<T>& SystemOfEquations<T>::solve_gauss() {
+Vector<T>* SystemOfEquations<T>::solve_gauss() const {
+    
+    SquareMatrix<T> temp_A = this->A;
+    Vector<T> temp_b = this->b;
+
+    // forward
+    for (int col = 0; col < this->get_size(); col++) {
+        T pivot = temp_A.get(col, col);
+        if (pivot == T{})
+            throw std::runtime_error("solve_gauss: zero pivot, matrix may be singular");
+        for (int row = col + 1; row < this->get_size(); row++) {
+            T scale = temp_A.get(row, col) / pivot;
+            temp_A.add_row(col , row, -scale);
+            temp_b.set(row, temp_b.get(row) - scale * temp_b.get(col));
+        }
+    }
+
+    Vector<T> *result = new Vector<T>(this->get_size());
+
+    // backward
+    for (int row = this->get_size() - 1; row >= 0; row--) {
+        T sum = temp_b.get(row);
+        for (int col = row + 1; col < temp_A.get_size(); col++) {
+            sum = sum - temp_A.get(row, col) * result->get(col);
+        }
+        result->set(row, sum / temp_A.get(row, row));
+    }
+
+    return result;
+}
+
+template <typename T>
+const Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() {
 
 }
 
 template <typename T>
-const Vector<T>& SystemOfEquations<T>::solve_gauss_with_pivot() {
-
-}
-
-template <typename T>
-const Vector<T>& SystemOfEquations<T>::solve_lu() {
+const Vector<T>* SystemOfEquations<T>::solve_lu() {
 
 }
 

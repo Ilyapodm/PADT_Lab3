@@ -13,7 +13,7 @@ public:
     // getters
     const SquareMatrix<T>& get_matrix() const;
     const Vector<T>& get_rhs() const;  // returns vector b
-    int size() const;
+    int get_size() const;
 
     // setters
     void set(const SquareMatrix<T> &new_A, const Vector<T> &new_b);  // allows to change A's and b's size; resets cache
@@ -21,9 +21,9 @@ public:
     void set_rhs(const Vector<T> &new_b);  // new_b's size must match A; doesn't reset cache
 
     // methods to solute the SLAE
-    const Vector<T> &solve_gauss();
-    const Vector<T> &solve_gauss_with_pivot();  
-    const Vector<T> &solve_lu();     
+    Vector<T>* solve_gauss() const;
+    Vector<T>* solve_gauss_with_pivot() const;  
+    Vector<T>* solve_lu() const;     
     
     // fabrics
     static SystemOfEquations<T> random(int n, unsigned seed = 42);
@@ -40,16 +40,17 @@ private:
     SquareMatrix<T> L;  // low triangle
     SquareMatrix<T> U;  // high triangle
 };
+
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const SystemOfEquations<T>& sys) {
     SquareMatrix<T> m = sys.get_matrix();
     Vector<T> v = sys.get_rhs();
-    for (int row = 0; row < sys.size(); row++) {
+    for (int row = 0; row < sys.get_size(); row++) {
         os << "( ";
-        for (int col = 0; col < sys.size() - 1; col++)  
+        for (int col = 0; col < sys.get_size() - 1; col++)  
             os << m.get(row, col) << ", ";
-        if (sys.size() > 0)
-            os << m.get(row, sys.size() - 1);
+        if (sys.get_size() > 0)
+            os << m.get(row, sys.get_size() - 1);
         os << " )  ( ";
         os << v.get(row) << " )";
     }

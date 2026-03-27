@@ -23,7 +23,7 @@ public:
     void set(int i, int j, const T &value) override;
 
     IMatrix<T>* add(const IMatrix<T> &other) const override;
-    IMatrix<T>* mult_scalar(const T &value) const override;
+    IMatrix<T>* mult_scalar(const T &value) const override;  //TODO operator * и + 
     double norm() const override;
 private:
     static int checked_size(int rows, int cols);

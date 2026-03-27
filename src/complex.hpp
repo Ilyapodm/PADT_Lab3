@@ -21,6 +21,7 @@ struct Complex{
             throw std::domain_error("operator/: division by zero");
         return {(re * o.re + im * o.im) / div, (im * o.re - re * o.im) / div};
     }
+    // TODO <=, <
     bool operator==(const Complex &o) const { return re == o.re && im == o.im; }
     bool operator!=(const Complex& o) const { return !(*this == o); }
     Complex& operator=(const Complex &o) {
@@ -31,7 +32,7 @@ struct Complex{
     T norm2() const { return re * re + im * im; }
     double abs() const { return std::sqrt(static_cast<double>(norm2())); }
     // use static_cast to return double 100%
-
+//
 };
 
 template <typename T>

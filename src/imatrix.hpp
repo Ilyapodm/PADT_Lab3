@@ -25,6 +25,8 @@ public:
     const T& operator()(int i, int j) const { return get(i, j); }  // reading only
 };
 
+// добавить [][]
+
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const IMatrix<T>& m) {
     for (int row = 0; row < m.get_rows(); row++) {
