@@ -7,6 +7,11 @@
  *******************************************************************/
 
 template <typename T>
+int SquareMatrix<T>::get_size() const {
+    return this->get_cols();
+}
+
+template <typename T>
 SquareMatrix<T>* SquareMatrix<T>::add(const IMatrix<T>& other) const {
     if (other.get_rows() != this->get_rows() || other.get_cols() != this->get_cols())
         throw std::invalid_argument("add: cols and rows must be the same");

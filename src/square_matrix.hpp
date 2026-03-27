@@ -14,6 +14,8 @@ public:
     // setter and getters are the same in the Matrix
     // need to override add and mult_scalar because of return value
 
+    int get_size() const;
+
     SquareMatrix<T>* add(const IMatrix<T>& other) const override;
     SquareMatrix<T>* mult_scalar(const T& value) const override;
 
