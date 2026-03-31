@@ -14,13 +14,25 @@ template <typename T>
 Matrix<T>::Matrix() : data{}, rows{0}, cols{0} {}
 
 template <typename T>
-Matrix<T>::Matrix(int rows, int cols) : data{checked_size(rows, cols)}, rows{rows}, cols{cols} {}
+Matrix<T>::Matrix(int rows, int cols) : 
+    data{checked_size(rows, cols)}, 
+    rows{rows}, 
+    cols{cols}
+{}
 
 template <typename T>
-Matrix<T>::Matrix(T* items, int rows, int cols) : data{items, checked_size(rows, cols)}, rows{rows}, cols{cols} {}
+Matrix<T>::Matrix(T* items, int rows, int cols) : 
+    data{items, checked_size(rows, cols)}, 
+    rows{rows}, 
+    cols{cols} 
+{}
 
 template <typename T>
-Matrix<T>::Matrix(const Matrix<T> &other) : data{other.data}, rows{other.rows}, cols{other.cols} {}
+Matrix<T>::Matrix(const Matrix<T> &other) : 
+    data{other.data}, 
+    rows{other.rows}, 
+    cols{other.cols} 
+{}
 
 /*******************************************************************
  * getters
@@ -101,7 +113,8 @@ double Matrix<T>::norm() const {
     double res = 0.0;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            res = res + (AlgebraTraits<T>::magnitude((*this)(i, j)) * AlgebraTraits<T>::magnitude((*this)(i, j))) ;
+            res = res + (AlgebraTraits<T>::magnitude((*this)(i, j)) *
+                         AlgebraTraits<T>::magnitude((*this)(i, j)));
         }
     }
     return std::sqrt(res);
