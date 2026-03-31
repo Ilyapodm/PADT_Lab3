@@ -7,8 +7,7 @@
 template <typename T>
 struct Complex{
     T re, im;
-    Complex(T re = T{}, T im = T{}) : re{re}, im{im} {}
-    Complex(T re) : re{re}, im{T{}} {}
+    explicit Complex(T re = T{}, T im = T{}) : re{re}, im{im} {}
 
     // return by value for value tupes is normal
     Complex operator+(const Complex &o) const { return {re + o.re, im + o.im}; }
@@ -17,11 +16,10 @@ struct Complex{
     Complex operator*(const Complex &o) const { return {re * o.re - im * o.im, re * o.im + im * o.re}; }
     Complex operator/(const Complex &o) const { 
         T div = o.re * o.re + o.im * o.im;
-        if (div == T{0}) 
+        if (div == T{}) 
             throw std::domain_error("operator/: division by zero");
         return {(re * o.re + im * o.im) / div, (im * o.re - re * o.im) / div};
     }
-    // TODO <=, <
     bool operator==(const Complex &o) const { return re == o.re && im == o.im; }
     bool operator!=(const Complex& o) const { return !(*this == o); }
     Complex& operator=(const Complex &o) {

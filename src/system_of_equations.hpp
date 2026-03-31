@@ -23,22 +23,27 @@ public:
     // methods to solute the SLAE
     Vector<T>* solve_gauss() const;
     Vector<T>* solve_gauss_with_pivot() const;  
-    Vector<T>* solve_lu() const;     
+    Vector<T>* solve_plu() const;     
     
     // fabrics
     static SystemOfEquations<T> random(int n, unsigned seed = 42);
     static SystemOfEquations<T> hilbert(int n);
 
+    // metrics
+    static double relative_error(const Vector<T> &approx, const Vector<T> &exact);  // static, because don't need A, b 
+    double residual(const Vector<T> &x) const;  // not static, we need A, b to calculate this
+
 private:
     SquareMatrix<T> A;
     Vector<T> b;    // vector col of free nums (rhs)
 
-    void decompose_lu();  // being called only from solve_lu
+    void decompose_plu() const;  // being called only from solve_plu
 
-    // LU-cache
-    bool lu_ready = false;
-    SquareMatrix<T> L;  // low triangle
-    SquareMatrix<T> U;  // high triangle
+    // PLU-cache (use mutable fields)
+    mutable bool lu_ready = false;  
+    mutable SquareMatrix<T> P;  // permutations matrix for A
+    mutable SquareMatrix<T> L;  // low triangle
+    mutable SquareMatrix<T> U;  // upper triangle
 };
 
 template <typename T>

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "math_types.hpp"
 #include "square_matrix.hpp"
 #include "system_of_equations.hpp"
 #include "vector.hpp"
@@ -26,9 +27,9 @@ SystemOfEquations<T> random(int n, unsigned seed = 42) {
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            A.set(i, j, static_cast<T>(dist(rng)));
+            A.set(i, j, AlgebraTraits<T>::random_value(rng,  dist));
         }
-        b.set(i, static_cast<T>(dist(rng)));
+        b.set(i, AlgebraTraits<T>::random_value(rng,  dist));
     }
 
     return SystemOfEquations<T>(A, b);
@@ -39,13 +40,14 @@ SystemOfEquations<T> hilbert(int n) {
     SquareMatrix<T> A(n);
     Vector<T> b(n);
 
-    // x_exact = (1,1,...,1)^T, b = H * x_exact
+    // x_exact = (1,1,...,1)^T, b = A * x_exact
     for (int i = 0; i < n; i++) {
-        T row_sum = T{};
+        T row_sum = AlgebraTraits<T>::zero();
         for (int j = 0; j < n; j++) {
-            T val = static_cast<T>(1.0 / (i + j + 1));  // H[i][j] = 1/(i+j+1), 0-indexed
+            // static_cast is legal, it can work with explicit constructor
+            T val = static_cast<T>(1.0 / (i + j + 1));  // A[i][j] = 1/(i+j+1), 0-indexed
             A.set(i, j, val);
-            row_sum = row_sum + val;  // b[i] = sum(H[i][j] * 1)
+            row_sum = row_sum + val;  // b[i] = sum(A[i][j] * 1)
         }
         b.set(i, row_sum);
     }
@@ -115,7 +117,7 @@ Vector<T>* SystemOfEquations<T>::solve_gauss() const {
     // forward
     for (int col = 0; col < n; col++) {
         T pivot = temp_A.get(col, col);
-        if (pivot == T{})
+        if (pivot == AlgebraTraits<T>::zero())
             throw std::runtime_error("solve_gauss: zero pivot, matrix may be singular");
         for (int row = col + 1; row < n; row++) {
             T scale = temp_A.get(row, col) / pivot;
@@ -144,14 +146,14 @@ Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() const {
     Vector<T> temp_b = this->b;
     const int n = this->get_size();
 
-    // choose max in the col
+    // main col cycle
     for (int col = 0; col < n; ++col) {
 
-        // search max row element |A[row][col]| for all r >= col
+        // search max row element |A[row][col]| for all row >= col
         int max_row = col;
-        double max_val = std::abs(static_cast<double>(magnitude(temp_A.get(col, col))));
+        double max_val = std::abs(AlgebraTraits<T>::magnitude(temp_A.get(col, col)));
         for (int row = col + 1; row < n; row++) {
-            double val = std::abs(static_cast<double>(magnitude(temp_A.get(row, col))));
+            double val = std::abs(AlgebraTraits<T>::magnitude(temp_A.get(row, col)));
             if (val > max_val) {
                 max_val = val;
                 max_row = row;
@@ -184,7 +186,7 @@ Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() const {
     // backward
     for (int row = n - 1; row >= 0; --row) {
         T sum = temp_b.get(row);
-        for (int col = row + 1; col < n; ++col)
+        for (int col = row + 1; col < n; ++col)  // inserting already calculated variables
             sum -= temp_A.get(row, col) * result->get(col);
         result->set(row, sum / temp_A.get(row, row));
     }
@@ -193,13 +195,103 @@ Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() const {
 }
 
 template <typename T>
-const Vector<T>* SystemOfEquations<T>::solve_lu() {
+Vector<T>* SystemOfEquations<T>::solve_plu() const {
+    if (!lu_ready)
+        decompose_plu();
 
+    const int n = get_size();
+
+    // forward: Ly = b 
+    // L[i][i] == 1 do not divide
+    Vector<T> y(n);
+    for (int i = 0; i < n; ++i) {
+        T sum = b.get(i);
+        for (int j = 0; j < i; ++j)
+            sum -= L.get(i, j) * y.get(j);
+        y.set(i, sum);   // / L[i][i] == / 1 — опускаем
+    }
+
+    // Backward Ux = y 
+    Vector<T>* x = new Vector<T>(n);
+    for (int i = n - 1; i >= 0; --i) {
+        T sum = y.get(i);
+        for (int j = i + 1; j < n; ++j)
+            sum -= U.get(i, j) * x->get(j);
+        x->set(i, sum / U.get(i, i));
+    }
+
+    return x;
 }
 
 template <typename T>
-void SystemOfEquations<T>::decompose_lu() {
+void SystemOfEquations<T>::decompose_plu() const {
+    const int n = get_size();
 
+    P = SquareMatrix<T>(n);
+    L = SquareMatrix<T>(n);
+    U = SquareMatrix<T>(n);
+
+    // Doolittle's algorithm: L has 1 on the diagonal, U - upper matrix
+    for (int col = 0; col < n; col++) {
+
+        // for (int row = col; row < n; row++) {
+        //     if ()
+        // }
+    }
+
+    lu_ready = true;
+        
 }
 
+/*******************************************************************
+ * Metrics
+ *******************************************************************/
 
+template <typename T>
+double SystemOfEquations<T>::residual(const Vector<T> &x) const {
+    const int n = get_size();
+
+    // calculate r = Ax - b
+    Vector<T> r(n);
+    for (int i = 0; i < n; ++i) {
+        T val = AlgebraTraits<T>::zero();
+        for (int j = 0; j < n; ++j)
+            val += A.get(i, j) * x.get(j);
+        r.set(i, val - b.get(i));
+    }
+
+    // ||r|| / ||b|| — relative residual
+    double norm_r = 0.0;
+    double norm_b = 0.0;
+    for (int i = 0; i < n; ++i) {
+        norm_r += magnitude(r.get(i)) * magnitude(r.get(i));
+        norm_b += magnitude(b.get(i)) * magnitude(b.get(i));
+    }
+
+    if (norm_b < 1e-14)
+        throw std::runtime_error("residual: zero right-hand side, metric is undefined");
+
+    return std::sqrt(norm_r) / std::sqrt(norm_b);
+}
+
+template <typename T>
+double SystemOfEquations<T>::relative_error(const Vector<T> &approx, const Vector<T> &exact) {
+    if (approx.size() != exact.size())
+        throw std::invalid_argument("relative_error: vector size mismatch");
+
+    const int n = approx.size();
+
+    double norm_diff = 0.0;
+    double norm_exact = 0.0;
+    for (int i = 0; i < n; ++i) {
+        double diff = magnitude(approx.get(i) - exact.get(i));
+        double ex   = magnitude(exact.get(i));
+        norm_diff += diff * diff;
+        norm_exact += ex * ex;
+    }
+
+    if (norm_exact < 1e-14)
+        throw std::runtime_error("relative_error: zero exact solution, metric is undefined");
+
+    return std::sqrt(norm_diff) / std::sqrt(norm_exact);
+}

@@ -102,13 +102,13 @@ IMatrix<T>* Matrix<T>::mult_scalar(const T &value) const {
 // Frobenius's Norm
 template <typename T>
 double Matrix<T>::norm() const {
-    double res = 0;
+    double res = 0.0;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            res = res + (magnitude((*this)(i, j)) * magnitude((*this)(i, j))) ;
+            res = res + (AlgebraTraits<T>::magnitude((*this)(i, j)) * AlgebraTraits<T>::magnitude((*this)(i, j))) ;
         }
     }
-    return std::sqrt(static_cast<double>(res));
+    return std::sqrt(res);
 }
 
 /*******************************************************************

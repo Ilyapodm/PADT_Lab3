@@ -1,6 +1,7 @@
 #pragma once
 
 #include "square_matrix.hpp"
+#include "math_types.hpp"
 
 /*******************************************************************
  * operations
@@ -52,7 +53,7 @@ SquareMatrix<T>* SquareMatrix<T>::mult_scalar(const T& value) const {
 
 template <typename T>
 T SquareMatrix<T>::trace() const {
-    T result = T{};
+    T result = AlgebraTraits<T>::zero();
     for (int i = 0; i < this->get_rows(); i++)
         result = result + this->get(i, i);
     return result;
