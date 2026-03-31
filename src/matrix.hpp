@@ -25,13 +25,14 @@ public:
     IMatrix<T>* add(const IMatrix<T> &other) const override;
     IMatrix<T>* mult_scalar(const T &value) const override;  //TODO operator * и + 
     double norm() const override;
+    
 private:
-    static int checked_size(int rows, int cols);
+    // flat dynamic array for being cache friendly and not having extra iterators through rows
+    DynamicArray<T> data;  // row major order, use data[i][j] = i * cols + j
     int rows;
     int cols;
 
-    // flat dynamic array for being cache friendly and not having extra iterators through rows
-    DynamicArray<T> data;  // row major order, use data[i][j] = i * cols + j
+    static int checked_size(int rows, int cols);
 };
 
 #include "matrix.tpp"

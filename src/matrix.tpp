@@ -20,11 +20,7 @@ template <typename T>
 Matrix<T>::Matrix(T* items, int rows, int cols) : data{items, checked_size(rows, cols)}, rows{rows}, cols{cols} {}
 
 template <typename T>
-Matrix<T>::Matrix(const Matrix<T> &other) {
-    this->data = other.data;  // DynamicArray has operator=
-    this->rows = other.rows;
-    this->cols = other.cols;
-}
+Matrix<T>::Matrix(const Matrix<T> &other) : data{other.data}, rows{other.rows}, cols{other.cols} {}
 
 /*******************************************************************
  * getters
