@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dynamic_array.hpp"
+#include "triangular_matrix.hpp"
 #include "vector.hpp"
 #include "square_matrix.hpp"
 #include <ostream>
@@ -43,8 +44,8 @@ private:
     // PLU-cache (use mutable fields)
     // PA=LU -> PAx=Pb, LUx=PB
     mutable bool lu_ready = false;  
-    mutable DynamicArray<T> P;  // permutations matrix (flat) for A
-    mutable SquareMatrix<T> L;  // low triangle
+    mutable DynamicArray<int> P;  // permutations matrix (flat) for A
+    mutable TriangularMatrix<T> L;  // low triangle
     mutable SquareMatrix<T> U;  // upper triangle
 };
 

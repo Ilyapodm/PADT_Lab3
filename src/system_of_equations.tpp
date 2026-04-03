@@ -1,8 +1,10 @@
 #pragma once
 
+#include "dynamic_array.hpp"
 #include "math_types.hpp"
 #include "square_matrix.hpp"
 #include "system_of_equations.hpp"
+#include "triangular_matrix.hpp"
 #include "vector.hpp"
 #include <random>
 
@@ -151,9 +153,9 @@ Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() const {
 
         // search max row element |A[row][col]| for all row >= col
         int max_row = col;
-        double max_val = std::abs(AlgebraTraits<T>::magnitude(temp_A.get(col, col)));
+        double max_val = AlgebraTraits<T>::magnitude(temp_A.get(col, col));
         for (int row = col + 1; row < n; row++) {
-            double val = std::abs(AlgebraTraits<T>::magnitude(temp_A.get(row, col)));
+            double val = AlgebraTraits<T>::magnitude(temp_A.get(row, col));
             if (val > max_val) {
                 max_val = val;
                 max_row = row;
@@ -164,7 +166,7 @@ Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() const {
         if (max_val < 1e-14)
             throw std::runtime_error("solve_gauss_with_pivot: singular or near-singular matrix");
 
-        // 3. swap rows in temp_A and temp_b
+        // swap rows in temp_A and temp_b
         if (max_row != col) {
             temp_A.swap_rows(col, max_row);
             T tmp = temp_b.get(col);
@@ -200,24 +202,25 @@ Vector<T>* SystemOfEquations<T>::solve_plu() const {
         decompose_plu();
 
     const int n = get_size();
+    // here b.get(i) = b.get(P.get(i)) to see origin row
 
-    // forward: Ly = b 
+    // forward: Ly = Pb 
     // L[i][i] == 1 do not divide
     Vector<T> y(n);
-    for (int i = 0; i < n; ++i) {
-        T sum = b.get(i);
-        for (int j = 0; j < i; ++j)
-            sum -= L.get(i, j) * y.get(j);
-        y.set(i, sum);   // / L[i][i] == / 1 — опускаем
+    for (int row = 0; row < n; row++) {
+        T sum = b.get(P.get(row));
+        for (int col = 0; col < row; col++)
+            sum -= L.get(row, col) * y.get(col);
+        y.set(row, sum);   // / L[i][i] == / 1 
     }
 
     // Backward Ux = y 
     Vector<T>* x = new Vector<T>(n);
-    for (int i = n - 1; i >= 0; --i) {
-        T sum = y.get(i);
-        for (int j = i + 1; j < n; ++j)
-            sum -= U.get(i, j) * x->get(j);
-        x->set(i, sum / U.get(i, i));
+    for (int row = n - 1; row >= 0; row--) {
+        T sum = y.get(row);
+        for (int col = row + 1; col < n; col++)
+            sum -= U.get(row, col) * x->get(col);
+        x->set(row, sum / U.get(row, row));
     }
 
     return x;
@@ -227,20 +230,63 @@ template <typename T>
 void SystemOfEquations<T>::decompose_plu() const {
     const int n = get_size();
 
-    P = SquareMatrix<T>(n);
-    L = SquareMatrix<T>(n);
-    U = SquareMatrix<T>(n);
+    P = DynamicArray<int>(n);  // P[i] = j: on the i row there is origin j row
+    for (int i = 0; i < n; i++)  // set all indexes
+        P.set(i, i);  
+    L = TriangularMatrix<T>(n, TriangularMatrix<T>::Kind::Lower);
+
+    // SquareMatrix is used in U because otherwise we have to create temp_A, 
+    // which means O(n^2) + O(n*(n+1)/2) VS simply O(n^2)
+    U = SquareMatrix<T>(A);
 
     // Doolittle's algorithm: L has 1 on the diagonal, U - upper matrix
     for (int col = 0; col < n; col++) {
+        // col here is also like index of diagonal element
 
-        // for (int row = col; row < n; row++) {
-        //     if ()
-        // }
+        // search max row element |A[row][col]| for all row >= col
+        int max_row = col;
+        double max_val = AlgebraTraits<T>::magnitude(U.get(col, col));
+
+        for (int row = col + 1; row < n; row++) {
+            double val = AlgebraTraits<T>::magnitude(U.get(row, col));
+            if (val > max_val) {
+                max_val = val;
+                max_row = row;
+            }
+        }
+
+        // if too few - fall
+        if (max_val < 1e-14)
+            throw std::runtime_error("decompose_plu: singular or near-singular matrix");
+
+        // swap rows in U, in L and indexes in P 
+        if (max_row != col) {
+            U.swap_rows(col, max_row);  // swap rows in U
+
+            // swap indexes in P
+            int temp_index = P.get(col);
+            P.set(col, P.get(max_row));
+            P.set(max_row, temp_index);
+
+            // swap  L (cols: 0..col-1)
+            for (int k = 0; k < col; ++k) {
+                T tmp = L.get(col, k);
+                L.set(col, k, L.get(max_row, k));
+                L.set(max_row, k, tmp);
+            }
+        }
+
+        //  forward
+        L.set(col, col, AlgebraTraits<T>::one());
+        const T pivot = U.get(col, col);
+        for (int row = col + 1; row < n; ++row) {
+            const T scale = U.get(row, col) / pivot;
+            U.add_row(col, row, -scale);        // row += -scale * col
+            L.set(row, col, scale);
+        }
     }
 
-    lu_ready = true;
-        
+    lu_ready = true;     
 }
 
 /*******************************************************************
