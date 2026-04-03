@@ -196,7 +196,7 @@ TEST(TriangularMatrix, AddLowerPlusLower) {
     EXPECT_DOUBLE_EQ(r->get(0, 0), 2.0);
     EXPECT_DOUBLE_EQ(r->get(1, 0), 4.0);
     EXPECT_DOUBLE_EQ(r->get(2, 2), 12.0);
-    // Zero is zero
+    // zero is zero
     EXPECT_DOUBLE_EQ(r->get(0, 1), 0.0);
 
     delete r;
