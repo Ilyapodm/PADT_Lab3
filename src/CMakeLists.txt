@@ -2,9 +2,9 @@
 add_library(matrix_lib INTERFACE)
 # INTERFACE — специальный тип для header-only библиотек (когда вся реализация
 # в .hpp файлах, что типично для шаблонных классов).
-# Если появятся .cpp файлы с реализацией — замени INTERFACE на STATIC:
+# Если появятся .cpp файлы с реализацией — INTERFACE -> STATIC:
 #   add_library(seq_lib STATIC
-#       DynamicArray.cpp    # <- сюда добавляй новые .cpp файлы
+#       DynamicArray.cpp    # <- новые .cpp файлы
 #       LinkedList.cpp
 #   )
 
@@ -34,7 +34,7 @@ target_include_directories(matrix_lib INTERFACE
 
 # ─── Исполняемый файл (интерактивная программа / UI) ──────────────────────────
 add_executable(lab3
-    main.cpp
+    ../main.cpp
     # Если разобьёшь main на несколько .cpp файлов — добавляй их сюда:
     # ui.cpp
     # menu.cpp

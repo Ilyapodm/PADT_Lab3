@@ -1,13 +1,18 @@
 # Executale file with tests
 add_executable(tests
     test_dynamic_array.cpp
+    test_diagonal_matrix.cpp
+    test_matrix.cpp
+    #test_sparse_matrix.cpp
+    test_square_matrix.cpp
+    test_triangular_matrix.cpp
+    test_vector.cpp
 )
 
 target_link_libraries(tests
     PRIVATE
     matrix_lib 
     GTest::gtest_main # GTest + готовый main(), который запускает все тесты
-    # Если хочешь писать main() сам — замени на GTest::gtest (без _main)
 )
 
 gtest_discover_tests(tests)

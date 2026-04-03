@@ -1,6 +1,3 @@
-// test_vector.cpp
-#pragma once
-
 #include <gtest/gtest.h>
 #include <stdexcept>
 
@@ -12,7 +9,7 @@
 
 template <typename T>
 void fill_seq(Vector<T>& v) {
-    for (int i = 0; i < v.size(); i++)
+    for (int i = 0; i < v.get_size(); i++)
         v.set(i, static_cast<T>(i));
 }
 
@@ -22,7 +19,7 @@ void fill_seq(Vector<T>& v) {
 
 TEST(VectorCtor, BasicSize) {
     Vector<double> v(5);
-    EXPECT_EQ(v.size(), 5);
+    EXPECT_EQ(v.get_size(), 5);
 }
 
 TEST(VectorCtor, AlwaysOneCol) {

@@ -113,8 +113,8 @@ double Matrix<T>::norm() const {
     double res = 0.0;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            res = res + (AlgebraTraits<T>::magnitude((*this)(i, j)) *
-                         AlgebraTraits<T>::magnitude((*this)(i, j)));
+            res = res + (AlgebraTraits<T>::magnitude(this->get(i, j)) *
+                         AlgebraTraits<T>::magnitude(this->get(i, j)));
         }
     }
     return std::sqrt(res);

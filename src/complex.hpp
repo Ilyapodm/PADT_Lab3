@@ -10,15 +10,15 @@ struct Complex{
     explicit Complex(T re = T{}, T im = T{}) : re{re}, im{im} {}
 
     // return by value for value tupes is normal
-    Complex operator+(const Complex &o) const { return {re + o.re, im + o.im}; }
-    Complex operator-(const Complex &o) const { return {re - o.re, im - o.im}; }
-    Complex operator-()                 const { return {-re, -im}; }  // unary minus
-    Complex operator*(const Complex &o) const { return {re * o.re - im * o.im, re * o.im + im * o.re}; }
+    Complex operator+(const Complex &o) const { return Complex<T>(re + o.re, im + o.im); }
+    Complex operator-(const Complex &o) const { return Complex<T>(re - o.re, im - o.im); }
+    Complex operator-()                 const { return Complex<T>(-re, -im); }  // unary minus
+    Complex operator*(const Complex &o) const { return Complex<T>(re * o.re - im * o.im, re * o.im + im * o.re); }
     Complex operator/(const Complex &o) const { 
         T div = o.re * o.re + o.im * o.im;
         if (div == T{}) 
             throw std::domain_error("operator/: division by zero");
-        return {(re * o.re + im * o.im) / div, (im * o.re - re * o.im) / div};
+        return Complex<T>((re * o.re + im * o.im) / div, (im * o.re - re * o.im) / div);
     }
     bool operator==(const Complex &o) const { return re == o.re && im == o.im; }
     bool operator!=(const Complex& o) const { return !(*this == o); }

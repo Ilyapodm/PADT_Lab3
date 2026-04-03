@@ -1,4 +1,3 @@
-// C++20
 #include <gtest/gtest.h>
 #include "diagonal_matrix.hpp"
 #include "square_matrix.hpp"

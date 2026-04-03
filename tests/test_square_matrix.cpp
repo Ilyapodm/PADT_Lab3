@@ -1,5 +1,3 @@
-#pragma once
-
 #include <gtest/gtest.h>
 #include <stdexcept>
 
@@ -174,8 +172,8 @@ TEST(SquareMatrixTrace, Size1) {
 
 TEST(SquareMatrixTrace, Complex) {
     SquareMatrix<Complex<double>> m(2);
-    m.set(0, 0, {1.0, 2.0});
-    m.set(1, 1, {3.0, 4.0});
+    m.set(0, 0, Complex<double>(1.0, 2.0));
+    m.set(1, 1, Complex<double>(3.0, 4.0));
     Complex<double> tr = m.trace();
     EXPECT_DOUBLE_EQ(tr.re, 4.0);
     EXPECT_DOUBLE_EQ(tr.im, 6.0);

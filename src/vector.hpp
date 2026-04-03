@@ -10,12 +10,12 @@ public:
     Vector(const Vector<T>& other) : Matrix<T>(other) {}
 
     const T& operator[](int i) const {
-        return this->get(i, 0);
+        return Matrix<T>::get(i, 0);
     }
 
     // not an override, this is overload
     const T& get(int i) const {
-        return this->get(i, 0); 
+        return Matrix<T>::get(i, 0); 
     }
     
     void set(int i, const T& value) { 
@@ -23,7 +23,7 @@ public:
     }
 
     int get_size() const { 
-        return this->get_rows(); 
+        return Matrix<T>::get_rows(); 
     }
 
     // Covariant return
@@ -31,12 +31,12 @@ public:
         if (other.get_rows() != this->get_rows() || other.get_cols() != this->get_cols())
             throw std::invalid_argument("add: cols and rows must be the same");
 
-        int n = this->size();
+        int n = this->get_size();
 
         Vector<T>* result = new Vector<T>(n);
         try {
             for (int i = 0; i < n; i++)
-                result->set(i, this->get(i) + other.get(i));
+                result->set(i, this->get(i) + other.get(i, 0));
         } catch(...) { 
             delete result;
             throw;
@@ -46,7 +46,7 @@ public:
     }
 
     Vector<T>* mult_scalar(const T& value) const override {
-        int n = this->size();
+        int n = this->get_size();
         Vector<T>* result = new Vector<T>(n);
 
         try {

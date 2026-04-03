@@ -13,14 +13,20 @@
  *******************************************************************/
 
 template <typename T>
-SystemOfEquations<T>::SystemOfEquations(const SquareMatrix<T>& A, const Vector<T>& b) {}
+SystemOfEquations<T>::SystemOfEquations(const SquareMatrix<T>& A, const Vector<T>& b) : 
+    A{A},
+    b{b},
+    lu_ready{false}
+    // L{A.get_size(), TriangularMatrix<T>::Kind::Lower},
+    // U{A}
+{}
 
 /*******************************************************************
  * Fabrics
  *******************************************************************/
 
 template <typename T>
-SystemOfEquations<T> random(int n, unsigned seed = 42) {
+SystemOfEquations<T> SystemOfEquations<T>::random(int n, unsigned seed) {
     std::mt19937 rng(seed);  // random engine
     std::uniform_real_distribution<double> dist(-1, 1);
 
@@ -38,7 +44,7 @@ SystemOfEquations<T> random(int n, unsigned seed = 42) {
 } 
 
 template <typename T>
-SystemOfEquations<T> hilbert(int n) {
+SystemOfEquations<T> SystemOfEquations<T>::hilbert(int n) {
     SquareMatrix<T> A(n);
     Vector<T> b(n);
 
@@ -82,7 +88,7 @@ int SystemOfEquations<T>::get_size() const {
 
 template <typename T>
 void SystemOfEquations<T>::set(const SquareMatrix<T>& new_A, const Vector<T>& new_b) {
-    if (new_A.get_rows() != new_b.size())
+    if (new_A.get_rows() != new_b.get_size())
         throw std::invalid_argument("set: size mismatch between A and b");
     A = new_A;
     b = new_b;
@@ -92,7 +98,7 @@ void SystemOfEquations<T>::set(const SquareMatrix<T>& new_A, const Vector<T>& ne
 
 template <typename T>
 void SystemOfEquations<T>::set_matrix(const SquareMatrix<T>& new_A) {
-    if (new_A.get_rows() != b.size())
+    if (new_A.get_rows() != b.get_size())
         throw std::invalid_argument("set_matrix: size mismatch with b");
     A = new_A;
     lu_ready = false;  // change the flag
@@ -100,7 +106,7 @@ void SystemOfEquations<T>::set_matrix(const SquareMatrix<T>& new_A) {
 
 template <typename T>
 void SystemOfEquations<T>::set_rhs(const Vector<T>& new_b) {
-    if (new_b.size() != A.get_rows())
+    if (new_b.get_size() != A.get_rows())
         throw std::invalid_argument("set_rhs: size mismatch with A");
     b = new_b;
     // don't reset lu_ready: LU depends on A, not on b
@@ -310,8 +316,8 @@ double SystemOfEquations<T>::residual(const Vector<T> &x) const {
     double norm_r = 0.0;
     double norm_b = 0.0;
     for (int i = 0; i < n; ++i) {
-        norm_r += magnitude(r.get(i)) * magnitude(r.get(i));
-        norm_b += magnitude(b.get(i)) * magnitude(b.get(i));
+        norm_r += AlgebraTraits<T>::magnitude(r.get(i)) * AlgebraTraits<T>::magnitude(r.get(i));
+        norm_b += AlgebraTraits<T>::magnitude(b.get(i)) * AlgebraTraits<T>::magnitude(b.get(i));
     }
 
     if (norm_b < 1e-14)
@@ -322,16 +328,16 @@ double SystemOfEquations<T>::residual(const Vector<T> &x) const {
 
 template <typename T>
 double SystemOfEquations<T>::relative_error(const Vector<T> &approx, const Vector<T> &exact) {
-    if (approx.size() != exact.size())
+    if (approx.get_size() != exact.get_size())
         throw std::invalid_argument("relative_error: vector size mismatch");
 
-    const int n = approx.size();
+    const int n = approx.get_size();
 
     double norm_diff = 0.0;
     double norm_exact = 0.0;
     for (int i = 0; i < n; ++i) {
-        double diff = magnitude(approx.get(i) - exact.get(i));
-        double ex   = magnitude(exact.get(i));
+        double diff = AlgebraTraits<T>::magnitude(approx.get(i) - exact.get(i));
+        double ex   = AlgebraTraits<T>::magnitude(exact.get(i));
         norm_diff += diff * diff;
         norm_exact += ex * ex;
     }

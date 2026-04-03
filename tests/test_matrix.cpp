@@ -1,6 +1,3 @@
-// test_matrix.cpp
-#pragma once
-
 #include <gtest/gtest.h>
 #include <stdexcept>
 #include <cmath>
@@ -154,8 +151,8 @@ TEST(MatrixAdd, OriginalUnchanged) {
 
 TEST(MatrixAdd, Complex) {
     Matrix<Complex<double>> a(1, 1), b(1, 1);
-    a.set(0, 0, {1.0, 2.0});
-    b.set(0, 0, {3.0, 4.0});
+    a.set(0, 0, Complex<double>(1.0, 2.0));
+    b.set(0, 0, Complex<double>(3.0, 4.0));
     IMatrix<Complex<double>>* c = a.add(b);
     EXPECT_DOUBLE_EQ(c->get(0, 0).re, 4.0);
     EXPECT_DOUBLE_EQ(c->get(0, 0).im, 6.0);
@@ -244,6 +241,6 @@ TEST(MatrixNorm, NegativeValues) {
 TEST(MatrixNorm, Complex) {
     // sqrt(|1+i|^2) = sqrt(2)
     Matrix<Complex<double>> m(1, 1);
-    m.set(0, 0, {1.0, 1.0});
+    m.set(0, 0, Complex<double>(1.0, 1.0));
     EXPECT_NEAR(m.norm(), std::sqrt(2.0), 1e-9);
 }

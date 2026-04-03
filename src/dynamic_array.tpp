@@ -17,7 +17,7 @@ DynamicArray<T>::DynamicArray(int size) : size{size}, capacity{size} {
     if (size < 0)
         throw std::invalid_argument("DynamicArray: size cannot be negative");
 
-    data = (size > 0) ? new T[size]{} : nullptr;  // do the initialization of items
+    data = (size > 0) ? new T[size]() : nullptr;  // do the initialization of items
 }
 
 template <typename T>
@@ -28,7 +28,7 @@ DynamicArray<T>::DynamicArray(T *items, int size) : size{size}, capacity{size} {
     if (items == nullptr && size > 0)
         throw std::invalid_argument("DynamicArray: items is nullptr");
 
-    data = new T[size]{};  // do the initialization of items
+    data = new T[size]();  // do the initialization of items
 
     // fallback if the '=' operator for T will fall 
     try{

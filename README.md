@@ -97,7 +97,7 @@ IMatrix<T>             ← интерфейс
 
 P выбран как DynamicArray, так как мы храним только 1 и 0, даже sparse здесь излишне.
 
-L и U - как TriangularMatrix.
+L - как TriangularMatrix, а U как SquareMatrix, так как иначе пришлось бы делать temp_A - рабочую копию главной матрицы и памяти бы в итоге занималось больше.
 
 Так как PA=LU, то PAx=Pb, значит LUx=Pb. Три шага решения:
 
