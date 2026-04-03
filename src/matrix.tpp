@@ -63,13 +63,13 @@ int Matrix<T>::get_cols() const {
 template <typename T>
 void Matrix<T>::set(int i, int j, const T &value) {
     if (i < 0 || j < 0 || i >= rows || j >= cols)
-        throw std::out_of_range("get: index out of range");
+        throw std::out_of_range("set: index out of range");
     
     data[i * cols + j] = value;  // operator = for T may throw
 }
 
 template <typename T>
-IMatrix<T>* Matrix<T>::add(const IMatrix<T> &other) const {
+Matrix<T>* Matrix<T>::add(const IMatrix<T> &other) const {
     if (rows != other.get_rows() || cols != other.get_cols())
         throw std::invalid_argument("add: cols and rows must be the same");
 
@@ -90,7 +90,7 @@ IMatrix<T>* Matrix<T>::add(const IMatrix<T> &other) const {
 }
 
 template <typename T>
-IMatrix<T>* Matrix<T>::mult_scalar(const T &value) const {
+Matrix<T>* Matrix<T>::mult_scalar(const T &value) const {
     Matrix<T> *result = new Matrix<T>(rows, cols);
 
     try {

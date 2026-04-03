@@ -102,7 +102,6 @@ const T& DynamicArray<T>::get(int index) const {
     return data[index];
 }
 
-// PERF git_size/get_capacity are the same for all 'T', but each 'T' will have it's own getter
 template <typename T>
 int DynamicArray<T>::get_size() const{
     return size;

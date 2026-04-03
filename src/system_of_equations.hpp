@@ -1,5 +1,6 @@
 #pragma once
 
+#include "dynamic_array.hpp"
 #include "vector.hpp"
 #include "square_matrix.hpp"
 #include <ostream>
@@ -40,8 +41,9 @@ private:
     void decompose_plu() const;  // being called only from solve_plu
 
     // PLU-cache (use mutable fields)
+    // PA=LU -> PAx=Pb, LUx=PB
     mutable bool lu_ready = false;  
-    mutable SquareMatrix<T> P;  // permutations matrix for A
+    mutable DynamicArray<T> P;  // permutations matrix (flat) for A
     mutable SquareMatrix<T> L;  // low triangle
     mutable SquareMatrix<T> U;  // upper triangle
 };

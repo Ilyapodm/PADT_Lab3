@@ -14,10 +14,10 @@ int SquareMatrix<T>::get_size() const {
 
 template <typename T>
 SquareMatrix<T>* SquareMatrix<T>::add(const IMatrix<T>& other) const {
-    if (other.get_rows() != this->get_rows() || other.get_cols() != this->get_cols())
+    if (other.get_rows() != get_size() || other.get_cols() != get_size())
         throw std::invalid_argument("add: cols and rows must be the same");
 
-    int n = this->get_rows();
+    int n = get_size();
     SquareMatrix<T>* result = new SquareMatrix<T>(n);
     try {
         for (int i = 0; i < n; i++)

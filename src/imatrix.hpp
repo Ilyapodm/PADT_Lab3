@@ -4,7 +4,9 @@
 
 template <typename T>
 class IMatrix {
+    // Matrix is a Ring, so there are the requirements for T:
     // T{} must be additive zero
+    // T{1} must be multiplicative zero
 public:
     virtual ~IMatrix() {}
 
