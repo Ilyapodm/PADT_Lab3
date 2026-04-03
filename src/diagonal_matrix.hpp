@@ -6,7 +6,8 @@
 
 template <typename T>
 class DiagonalMatrix : public IMatrix<T> {
-// constructors
+public:
+    // constructors
     DiagonalMatrix();
     explicit DiagonalMatrix(int n);
     DiagonalMatrix(T* items, int n);
