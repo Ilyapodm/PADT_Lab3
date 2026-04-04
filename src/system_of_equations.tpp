@@ -149,7 +149,7 @@ Vector<T>* SystemOfEquations<T>::solve_gauss() const {
 }
 
 template <typename T>
-Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() const {
+Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot(double tol) const {
     SquareMatrix<T> temp_A = this->A;
     Vector<T> temp_b = this->b;
     const int n = this->get_size();
@@ -169,7 +169,7 @@ Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() const {
         }
 
         // if too few - fall
-        if (max_val < 1e-14)
+        if (max_val < tol)
             throw std::runtime_error("solve_gauss_with_pivot: singular or near-singular matrix");
 
         // swap rows in temp_A and temp_b
@@ -203,9 +203,9 @@ Vector<T>* SystemOfEquations<T>::solve_gauss_with_pivot() const {
 }
 
 template <typename T>
-Vector<T>* SystemOfEquations<T>::solve_plu() const {
+Vector<T>* SystemOfEquations<T>::solve_plu(double tol) const {
     if (!lu_ready)
-        decompose_plu();
+        decompose_plu(tol);
 
     const int n = get_size();
     // here b.get(i) = b.get(P.get(i)) to see origin row
@@ -233,7 +233,7 @@ Vector<T>* SystemOfEquations<T>::solve_plu() const {
 }
 
 template <typename T>
-void SystemOfEquations<T>::decompose_plu() const {
+void SystemOfEquations<T>::decompose_plu(double tol) const {
     const int n = get_size();
 
     P = DynamicArray<int>(n);  // P[i] = j: on the i row there is origin j row
@@ -262,7 +262,7 @@ void SystemOfEquations<T>::decompose_plu() const {
         }
 
         // if too few - fall
-        if (max_val < 1e-14)
+        if (max_val < tol)
             throw std::runtime_error("decompose_plu: singular or near-singular matrix");
 
         // swap rows in U, in L and indexes in P 

@@ -24,8 +24,8 @@ public:
 
     // methods to solute the SLAE
     Vector<T>* solve_gauss() const;
-    Vector<T>* solve_gauss_with_pivot() const;  
-    Vector<T>* solve_plu() const;     
+    Vector<T>* solve_gauss_with_pivot(double tol = 1e-14) const;  
+    Vector<T>* solve_plu(double tol = 1e-14) const;     
     
     // fabrics
     static SystemOfEquations<T> random(int n, unsigned seed = 42);
@@ -39,7 +39,7 @@ private:
     SquareMatrix<T> A;
     Vector<T> b;    // vector col of free nums (rhs)
 
-    void decompose_plu() const;  // being called only from solve_plu
+    void decompose_plu(double tol) const;  // being called only from solve_plu
 
     // PLU-cache (use mutable fields)
     // PA=LU -> PAx=Pb, LUx=PB

@@ -422,7 +422,7 @@ static void experiment_4_2() {
 }
 
 // 4.3 — Hilbert matrix accuracy
-static void experiment_4_3() {
+static void experiment_4_3(double tol) {
     const int sizes[] = {5, 10, 15};
 
     std::cout << "\n--- Experiment 4.3: Hilbert accuracy (x_exact = [1,...,1]) ---\n";
@@ -444,8 +444,8 @@ static void experiment_4_3() {
             Vector<T>* x = nullptr;
             try {
                 if (m == 0)      x = soe.solve_gauss();
-                else if (m == 1) x = soe.solve_gauss_with_pivot();
-                else             x = soe.solve_plu();
+                else if (m == 1) x = soe.solve_gauss_with_pivot(tol);
+                else             x = soe.solve_plu(tol);
 
                 std::cout << "  " << std::setw(14) << names[m]
                           << std::setw(16) << std::scientific << std::setprecision(4) << soe.residual(*x)
@@ -465,7 +465,7 @@ static void run_experiments() {
     std::cout << "\n=== Running all experiments (n=1000 may take ~30s) ===\n";
     try { experiment_4_1(); } catch (const std::exception& e) { std::cout << "[!] Exp 4.1: " << e.what() << "\n"; }
     try { experiment_4_2(); } catch (const std::exception& e) { std::cout << "[!] Exp 4.2: " << e.what() << "\n"; }
-    try { experiment_4_3(); } catch (const std::exception& e) { std::cout << "[!] Exp 4.3: " << e.what() << "\n"; }
+    try { experiment_4_3(1e-300); } catch (const std::exception& e) { std::cout << "[!] Exp 4.3: " << e.what() << "\n"; }
     std::cout << "=== Done ===\n";
 }
 
