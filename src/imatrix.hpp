@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 template <typename T>
 class IMatrix {
     // Matrix is a Ring, so there are the requirements for T:
@@ -13,8 +11,8 @@ public:
     // getters
     virtual const T& get(int i, int j) const = 0;
     
-    virtual int get_rows() const = 0;  // returns the number of "строк"
-    virtual int get_cols() const = 0;  // returns the number of "столбцов"
+    virtual int get_rows() const = 0; 
+    virtual int get_cols() const = 0;
 
     // operations
     virtual void set(int i, int j, const T &value) = 0;
@@ -26,18 +24,3 @@ public:
     // operators
     const T& operator()(int i, int j) const { return get(i, j); }  // reading only
 };
-
-// добавить [][]
-
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const IMatrix<T>& m) {
-    for (int row = 0; row < m.get_rows(); row++) {
-        os << "( ";
-        for (int col = 0; col < m.get_cols() - 1; col++)  
-            os << m.get(row, col) << ", ";
-        if (m.get_cols() > 0)
-            os << m.get(row, m.get_cols() - 1);
-        os << " )\n";
-    }
-    return os;
-}

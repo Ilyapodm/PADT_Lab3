@@ -10,6 +10,7 @@ public:  // TODO перенести конструкторы в tpp
     explicit SquareMatrix(int n) : Matrix<T>(n, n) {}  // explicit to have no suprises with solo integers
     SquareMatrix(T* items, int n) : Matrix<T>(items, n, n) {}
     SquareMatrix(const SquareMatrix<T> &other) : Matrix<T>(other) {}
+    SquareMatrix& operator=(const SquareMatrix&) = default;
     ~SquareMatrix() override {}
 
     // setter and getters are the same in the Matrix

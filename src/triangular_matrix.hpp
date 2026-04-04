@@ -15,6 +15,7 @@ public:
     TriangularMatrix(int n, Kind kind);
     TriangularMatrix(T* items, int n, Kind kind);
     TriangularMatrix(const TriangularMatrix<T> &other);
+    TriangularMatrix& operator=(const TriangularMatrix&) = default;
     ~TriangularMatrix() override {}  // don't need to delete data, because it's not pointer
 
     // getters

@@ -41,7 +41,7 @@ const T& TriangularMatrix<T>::get(int i, int j) const {
     if (i < 0 || j < 0 || i >= n || j >= n)
         throw std::out_of_range("get: index out of range");
     bool is_lower = kind == Kind::Lower ? true : false;
-    if (i > j && !is_lower || j > i && is_lower)
+    if ((i > j && !is_lower) || (j > i && is_lower))
         return ZERO;
     if (is_lower)
         return data[i * (i + 1) / 2 + j];
@@ -69,6 +69,7 @@ int TriangularMatrix<T>::get_size() const {
 // for Lower use Raw Major: Matrix(i, j) = data[i*(i+1)/2 + j]
 // for Upper use Column Major: Matrix(i, j) = data[j*(j+1)/2 + i]
 
+// TODO убрать копипаст в оператор  ()
 template <typename T>
 void TriangularMatrix<T>::set(int i, int j, const T &value) {
     if (i < 0 || j < 0 || i >= n || j >= n)

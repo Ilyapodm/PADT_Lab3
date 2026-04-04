@@ -12,6 +12,7 @@ public:
     explicit DiagonalMatrix(int n);
     DiagonalMatrix(T* items, int n);
     DiagonalMatrix(const DiagonalMatrix<T> &other);
+    DiagonalMatrix& operator=(const DiagonalMatrix&) = default;
     ~DiagonalMatrix() override {}  // don't need to delete data, because it's not pointer
 
     // getters
