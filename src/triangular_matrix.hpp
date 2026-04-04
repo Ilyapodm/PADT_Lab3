@@ -29,18 +29,18 @@ public:
     void set(int i, int j, const T &value) override;
 
     SquareMatrix<T>* add(const IMatrix<T> &other) const override;
-    TriangularMatrix<T>* mult_scalar(const T &value) const override;  //TODO operator * и + 
+    TriangularMatrix<T>* mult_scalar(const T &value) const override;
     double norm() const override;
 private:
     static int checked_size(int n);
 
-    // n(n+1)/2 not zero elements
-    // for Lower use Raw Major: Matrix(i, j) = data[i*(i+1)/2 + j]
-    // for Upper use Column Major: Matrix(i, j) = data[j*(j+1)/2 + i]
-    DynamicArray<T> data;  
     inline static const T ZERO = AlgebraTraits<T>::zero();  // one Zero for the class
     int n;  // rows and cols
     Kind kind;  // upper/lower
+    DynamicArray<T> data;  
+    // n(n+1)/2 not zero elements
+    // for Lower use Raw Major: Matrix(i, j) = data[i*(i+1)/2 + j]
+    // for Upper use Column Major: Matrix(i, j) = data[j*(j+1)/2 + i]
 };
 
 #include "triangular_matrix.tpp"

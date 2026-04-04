@@ -4,6 +4,22 @@
 #include "math_types.hpp"
 
 /*******************************************************************
+ * constructors
+ *******************************************************************/
+
+template <typename T>
+SquareMatrix<T>::SquareMatrix() : Matrix<T>() {}
+
+template <typename T>
+SquareMatrix<T>::SquareMatrix(int n) : Matrix<T>(n, n) {}
+
+template <typename T>
+SquareMatrix<T>::SquareMatrix(T* items, int n) : Matrix<T>(items, n, n) {}
+
+template <typename T>
+SquareMatrix<T>::SquareMatrix(const SquareMatrix<T> &other) : Matrix<T>(other) {}
+
+/*******************************************************************
  * operations
  *******************************************************************/
 

@@ -4,12 +4,12 @@
 
 template <typename T>
 class SquareMatrix : public Matrix<T> {
-public:  // TODO перенести конструкторы в tpp
+public: 
     // constructors
-    SquareMatrix() : Matrix<T>() {}
-    explicit SquareMatrix(int n) : Matrix<T>(n, n) {}  // explicit to have no suprises with solo integers
-    SquareMatrix(T* items, int n) : Matrix<T>(items, n, n) {}
-    SquareMatrix(const SquareMatrix<T> &other) : Matrix<T>(other) {}
+    SquareMatrix();
+    explicit SquareMatrix(int n); // explicit to have no suprises with solo integers
+    SquareMatrix(T* items, int n);
+    SquareMatrix(const SquareMatrix<T> &other);
     SquareMatrix& operator=(const SquareMatrix&) = default;
     ~SquareMatrix() override {}
 

@@ -24,7 +24,7 @@ public:
     void set(int i, int j, const T &value) override;
 
     Matrix<T>* add(const IMatrix<T> &other) const override;
-    Matrix<T>* mult_scalar(const T &value) const override;  //TODO operator * и + 
+    Matrix<T>* mult_scalar(const T &value) const override;  
     double norm() const override;
     
 private:
