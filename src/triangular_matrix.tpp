@@ -38,14 +38,13 @@ TriangularMatrix<T>::TriangularMatrix(const TriangularMatrix<T> &other) :
 
 template <typename T>
 const T& TriangularMatrix<T>::get(int i, int j) const {
-    if (i < 0 || j < 0 || i >= n || j >= n)
+    if (! in_bounds(i, j))
         throw std::out_of_range("get: index out of range");
-    bool is_lower = kind == Kind::Lower ? true : false;
-    if ((i > j && !is_lower) || (j > i && is_lower))
+    
+    if (! in_structure(i, j))
         return ZERO;
-    if (is_lower)
-        return data[i * (i + 1) / 2 + j];
-    return data[j * (j + 1) / 2 + i];
+    
+    return data[flat_index(i, j)];
 }
 
 template <typename T>
@@ -66,24 +65,17 @@ int TriangularMatrix<T>::get_size() const {
 /*******************************************************************
  * operations
  *******************************************************************/
-// for Lower use Raw Major: Matrix(i, j) = data[i*(i+1)/2 + j]
-// for Upper use Column Major: Matrix(i, j) = data[j*(j+1)/2 + i]
 
 // TODO убрать копипаст в оператор  ()
 template <typename T>
 void TriangularMatrix<T>::set(int i, int j, const T &value) {
-    if (i < 0 || j < 0 || i >= n || j >= n)
+    if (! in_bounds(i, j))
         throw std::out_of_range("set: index out of range");
 
-    bool is_lower = kind == Kind::Lower ? true : false;
-    if ((is_lower && j > i) || (! is_lower && i > j))
+    if (! in_structure(i, j))
         throw std::invalid_argument("set: unable to set element to not triangular position");
 
-    if (is_lower) {
-        data[i * (i + 1) / 2 + j] = value;
-    } else {
-        data[j * (j + 1) / 2 + i] = value;
-    }
+    data[flat_index(i, j)] = value;
 }
 
 template <typename T>
@@ -108,7 +100,6 @@ SquareMatrix<T>* TriangularMatrix<T>::add(const IMatrix<T> &other) const {
 template <typename T>
 TriangularMatrix<T>* TriangularMatrix<T>::mult_scalar(const T &value) const {
     TriangularMatrix<T>* result = new TriangularMatrix<T>(n, kind);
-    bool is_lower = kind == Kind::Lower ? true : false;
 
     try {
         for (int i = 0; i < data.get_size(); i++) {
@@ -145,4 +136,21 @@ int TriangularMatrix<T>::checked_size(int n) {
         throw std::overflow_error("TriangularMatrix: n * n overflows int");
 
     return n * (n + 1) / 2;
+}
+
+template <typename T>
+bool TriangularMatrix<T>::in_bounds(int i, int j) const noexcept {
+    return (i >= 0 && i < n && j >= 0 && j < n);
+}
+
+template <typename T>
+bool TriangularMatrix<T>::in_structure(int i, int j) const noexcept {
+    return kind == Kind::Lower ? i >= j : j >= i;
+}
+
+template <typename T>
+int TriangularMatrix<T>::flat_index(int i, int j) const noexcept {
+    // for Lower use Raw Major: Matrix(i, j) = data[i*(i+1)/2 + j]
+    // for Upper use Column Major: Matrix(i, j) = data[j*(j+1)/2 + i]
+    return kind == Kind::Lower ? i * (i + 1) / 2 + j : j * (j + 1) / 2 + i;
 }

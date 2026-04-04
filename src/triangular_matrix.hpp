@@ -32,7 +32,11 @@ public:
     TriangularMatrix<T>* mult_scalar(const T &value) const override;
     double norm() const override;
 private:
+    // utils
     static int checked_size(int n);
+    bool in_bounds(int i, int j) const noexcept;
+    bool in_structure(int i, int j) const noexcept;
+    int flat_index(int i, int j) const noexcept;
 
     inline static const T ZERO = AlgebraTraits<T>::zero();  // one Zero for the class
     int n;  // rows and cols
