@@ -14,6 +14,39 @@ cd build && ctest --output-on-failure
 4. Запустить тесты напрямую с фильтрацией:
 ./build/tests/my_tests --gtest_filter="DynamicArray*"
 
+## Структура проекта
+src/
+├── CMakeLists.txt
+├── array_sequence.hpp / .tpp
+├── complex.hpp
+├── diagonal_matrix.hpp / .tpp
+├── dynamic_array.hpp / .tpp
+├── ienumerable.hpp
+├── ienumerator.hpp
+├── imatrix.hpp
+├── math_types.hpp
+├── matrix.hpp / .tpp
+├── option.hpp
+├── sequence.hpp / .tpp
+├── sparse_matrix.hpp / .tpp
+├── square_matrix.hpp / .tpp
+├── system_of_equations.hpp / .tpp
+├── triangular_matrix.hpp / .tpp
+└── vector.hpp
+tests/
+├── CMakeLists.txt
+├── test_diagonal_matrix.cpp
+├── test_dynamic_array.cpp
+├── test_matrix.cpp
+├── test_sparse_matrix.cpp
+├── test_square_matrix.cpp
+├── test_triangular_matrix.cpp
+└── test_vector.cpp
+CMakeLists.txt
+main.cpp
+README.md
+SLAE_report.md
+
 ## Архитектура
 ### Принцип подстановки Лисков (LSP)
 `Дочерний класс должен дополнять, а не замещать поведение родительского класса.`
@@ -30,6 +63,11 @@ PS. Если не хватит 2x `capacity`, то выделиться `size + 
 ### Complex\<T\>
 
 Функция `magnitude()` для `Complex<T>` и `int`, `double` (используется в методе `norm()`) вынесена в отдельный файл math_type.hpp, чтобы  ADL (Argument-Dependent Lookup) правильно выбрал реализацию без лишних include'ов
+
+### AlgebraTraits<T>
+Единая точка алгебраических примитивов: `zero()`, `one()`, 
+`magnitude()`, `random_value()`. Частичная специализация для `Complex<T>`.
+Мотивация: частичная специализация функций запрещена в C++ — поэтому struct.
 
 ### IMatrix\<T\>
 
@@ -53,14 +91,13 @@ IMatrix<T>             ← интерфейс
     ├── TriangularMatrix<T>       ← своё хранение n*(n+1)/2
     ├── DiagonalMatrix<T>         ← хранит только диагональ DynamicArray(n)
     ├── SparseMatrix<T>           ← DynamicArray<Triplet>
-    └── AutoMatrix<T>             ← Переключается между Dense и Sparse
 ```
 
 Оператор `(i, j)` только для чтения реализован в самом интерфейсе и доступен всем потомкам при переопределении `get(i, j)`.
 
 #### Детали реализации
 
-`magnitude()` - единый интерфейс (через перегрузку) вычисления модуля для `int`, `double`, `T` и `Complex<T>`
+Методы `add()` и `mult_scalar()` используют ковариантные возвращаемые типы: каждый класс возвращает наиболее конкретный гарантированный тип (например, `SquareMatrix*` из `TriangularMatrix::add()`).
 
 #### TriangularMatrix
 Для нижнетреугольной матрицы используем Raw-Major: Matrix(i, j) = data[i*(i+1)/2 + j]
@@ -88,7 +125,7 @@ IMatrix<T>             ← интерфейс
 Решение СЛАУ стандартным методом Гаусса
 
 #### solve_gauss_with_pivot()
-Решение СЛАУ методом Гаусса с выбором ведущего элеманта. 
+Решение СЛАУ методом Гаусса с выбором ведущего элемента. 
 
 Просто для каждого столбца выбираем максимальный элемент (ниже диагонального или равный ему) и переставляем строки, таким образом избегая деление на маленькие по модулю числа, которые вносят неточность.
 
@@ -104,9 +141,9 @@ L - как TriangularMatrix, а U как SquareMatrix, так как иначе 
 1. Применяем перестановку к b:
 `b′=Pb`(просто переставить компоненты вектора)
 
-1. Прямая подстановка — решаем `Ly=b`:
+2. Прямая подстановка — решаем `Ly=b`:
 
-2. Обратная подстановка — решаем `Ux=y`:
+3. Обратная подстановка — решаем `Ux=y`:
 
 #### hilbert(int n)
 Для проверки точности методов используется матрица Гильберта:
@@ -118,6 +155,8 @@ $$H_{ij} = \frac{1}{i+j-1}, \quad i,j \in \{1, \ldots, n\}$$
 Это позволяет измерить относительную погрешность $\|{\tilde{x} - x^*}\| / \|{x^*}\|$
 без дополнительных предположений о решении.
 
+## Эксперименты (Алгебра ЛР-1)
+Подробности — в `SLAE_report.md`. 
+
 ## Реализованные бонусы
-- Перегрузка оператора "( )"
-- .
+- Перегрузка оператора "( )" для матриц
