@@ -1,6 +1,6 @@
 #pragma once
 
-// separeted file for streaming
+// separated file for streaming
 #include <iostream>
 #include "imatrix.hpp"
 

@@ -34,6 +34,7 @@ private:
     int cols;
 
     static int checked_size(int rows, int cols);
+    bool in_bounds(int i, int j) const noexcept;
 };
 
 #include "matrix.tpp"

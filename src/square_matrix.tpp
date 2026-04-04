@@ -123,4 +123,4 @@ template <typename T>
 void SquareMatrix<T>::check_row(int r) const {
         if (r < 0 || r >= this->get_rows())
             throw std::out_of_range("row index out of range");
-    }
+}

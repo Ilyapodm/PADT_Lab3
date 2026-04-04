@@ -40,7 +40,7 @@ Matrix<T>::Matrix(const Matrix<T> &other) :
 
 template <typename T>
 const T& Matrix<T>::get(int i, int j) const {
-    if (i < 0 || j < 0 || i >= rows || j >= cols)
+    if (! in_bounds(i, j))
         throw std::out_of_range("get: index out of range");
 
     return data[i * cols + j];
@@ -62,7 +62,7 @@ int Matrix<T>::get_cols() const {
 
 template <typename T>
 void Matrix<T>::set(int i, int j, const T &value) {
-    if (i < 0 || j < 0 || i >= rows || j >= cols)
+    if (! in_bounds(i, j))
         throw std::out_of_range("set: index out of range");
     
     data[i * cols + j] = value;  // operator = for T may throw
@@ -121,7 +121,7 @@ double Matrix<T>::norm() const {
 }
 
 /*******************************************************************
- * utils
+ * helpers
  *******************************************************************/
 
 // use not to create invalid object and then destroy it. 
@@ -135,4 +135,9 @@ int Matrix<T>::checked_size(int rows, int cols) {
         throw std::overflow_error("Matrix: rows * cols overflows int");
 
     return rows * cols;
+}
+
+template <typename T>
+bool Matrix<T>::in_bounds(int i, int j) const noexcept {
+    return (i >= 0 && i < rows && j >= 0 && j < cols);
 }

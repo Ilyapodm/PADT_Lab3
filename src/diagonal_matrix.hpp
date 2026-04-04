@@ -30,11 +30,13 @@ public:
     double norm() const override;
     
 private:
-    DynamicArray<T> data;  // store only diagonal elements
     int n;
     inline static const T ZERO = AlgebraTraits<T>::zero();
+    DynamicArray<T> data;  // store only diagonal elements
 
+    // helpers
     static int checked_size(int n);
+    bool in_bounds(int i, int j) const noexcept;
 };
 
 #include "diagonal_matrix.tpp"

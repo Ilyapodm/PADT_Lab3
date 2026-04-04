@@ -32,7 +32,7 @@ DiagonalMatrix<T>::DiagonalMatrix(const DiagonalMatrix<T> &other) :
  *******************************************************************/
 template <typename T>
 const T& DiagonalMatrix<T>::get(int i, int j) const {
-    if (i < 0 || j < 0 || i >= n || j >= n)
+    if (! in_bounds(i, j))
         throw std::out_of_range("get: index out of range");
     if (i != j)
         return ZERO;
@@ -59,7 +59,7 @@ int DiagonalMatrix<T>::get_size() const {
 
 template <typename T>
 void DiagonalMatrix<T>::set(int i, int j, const T &value) {
-    if (i < 0 || j < 0 || i >= n || j >= n)
+    if (! in_bounds(i, j))
         throw std::out_of_range("set: index out of range");
 
     if (i != j)
@@ -116,7 +116,7 @@ double DiagonalMatrix<T>::norm() const {
 }
 
 /*******************************************************************
- * utils
+ * helpers
  *******************************************************************/
 
 // use not to create invalid object and then destroy it. 
@@ -127,4 +127,9 @@ int DiagonalMatrix<T>::checked_size(int n) {
     // n can't overflow the int, because it is already int
 
     return n;
+}
+
+template <typename T>
+bool DiagonalMatrix<T>::in_bounds(int i, int j) const noexcept {
+    return (i >= 0 && i < n && j >= 0 && j < n);
 }
