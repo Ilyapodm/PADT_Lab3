@@ -143,5 +143,5 @@ int TriangularMatrix<T>::checked_size(int n) {
     if (n > 0 && n > INT_MAX / n)  // check this way not to do n*n, that overflows
         throw std::overflow_error("TriangularMatrix: n * n overflows int");
 
-    return n * (n - 1) / 2;
+    return n * (n + 1) / 2;
 }

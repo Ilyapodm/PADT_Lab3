@@ -1,4 +1,3 @@
-// main.cpp
 #include <iostream>
 #include <chrono>
 #include <iomanip>
@@ -16,6 +15,12 @@
 #include "diagonal_matrix.hpp"
 #include "system_of_equations.hpp"
 #include "array_sequence.hpp"
+
+//TODO Разобраться в багах в эксперименте
+//TODO потыкать еще и посмотреть на фолбэки
+// TODO оформить эксперимент в таблицу
+// TODO ux в main (clear, больше менюё)
+// TODO сделать sparse matrix
 
 // ============================================================
 // Types

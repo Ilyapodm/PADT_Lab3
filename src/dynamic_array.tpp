@@ -15,7 +15,7 @@ DynamicArray<T>::DynamicArray() : size{0}, capacity{0} {
 template <typename T>
 DynamicArray<T>::DynamicArray(int size) : size{size}, capacity{size} {
     if (size < 0)
-        throw std::invalid_argument("DynamicArray: size cannot be negative");
+        throw std::invalid_argument("DynamicArray<T>::DynamicArray: size cannot be negative");
 
     data = (size > 0) ? new T[size]() : nullptr;  // do the initialization of items
 }
@@ -23,10 +23,10 @@ DynamicArray<T>::DynamicArray(int size) : size{size}, capacity{size} {
 template <typename T>
 DynamicArray<T>::DynamicArray(T *items, int size) : size{size}, capacity{size} {
     if (size < 0)
-        throw std::invalid_argument("DynamicArray: size cannot be negative");
+        throw std::invalid_argument("DynamicArray<T>::DynamicArray: size cannot be negative");
 
     if (items == nullptr && size > 0)
-        throw std::invalid_argument("DynamicArray: items is nullptr");
+        throw std::invalid_argument("DynamicArray<T>::DynamicArray: items is nullptr");
 
     data = new T[size]();  // do the initialization of items
 
@@ -96,7 +96,7 @@ DynamicArray<T>& DynamicArray<T>::operator=(const DynamicArray<T> &other) {
 template <typename T>
 const T& DynamicArray<T>::get(int index) const {
     if (index >= size || index < 0) {
-        throw std::out_of_range("get: Index out of range");
+        throw std::out_of_range("DynamicArray<T>::get: Index out of range");
     }
     
     return data[index];
@@ -119,7 +119,7 @@ int DynamicArray<T>::get_capacity() const{
 template <typename T>
 void DynamicArray<T>::set(int index, const T& value) {
     if (index >= size || index < 0) {
-        throw std::out_of_range("set: Index out of range");
+        throw std::out_of_range("DynamicArray<T>::set: Index out of range");
     }
     
     data[index] = value;
@@ -128,7 +128,7 @@ void DynamicArray<T>::set(int index, const T& value) {
 template <typename T>
 void DynamicArray<T>::remove_at(int index) {
     if (index < 0 || index >= size)
-        throw std::out_of_range("remove_at: index out of range");
+        throw std::out_of_range("DynamicArray<T>::remove_at: index out of range");
 
     // store the values, don't have to "delete"
     // no strong garanty, no mem leaks, but object can be changed incorrectly,
@@ -145,7 +145,7 @@ void DynamicArray<T>::remove_at(int index) {
 template <typename T>
 void DynamicArray<T>::resize(int new_size) {
     if (new_size < 0)
-        throw std::invalid_argument("resize: new_size cannot be negative");
+        throw std::invalid_argument("DynamicArray<T>::resize: new_size cannot be negative");
 
     // totaly clears the buffer (data)
     if (new_size == 0) {
@@ -184,7 +184,7 @@ void DynamicArray<T>::resize(int new_size) {
 template <typename T>
 const T& DynamicArray<T>::operator[](int index) const {
     if (index >= size || index < 0) {
-        throw std::out_of_range("operator[]: Index out of range");
+        throw std::out_of_range("DynamicArray<T>::operator[]: Index out of range");
     }
 
     return data[index];
@@ -193,7 +193,7 @@ const T& DynamicArray<T>::operator[](int index) const {
 template <typename T>
 T& DynamicArray<T>::operator[](int index) {
     if (index >= size || index < 0) {
-        throw std::out_of_range("operator[]: Index out of range");
+        throw std::out_of_range("DynamicArray<T>::operator[]: Index out of range");
     }
     
     return data[index];

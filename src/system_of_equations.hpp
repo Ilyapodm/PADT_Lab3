@@ -60,7 +60,7 @@ std::ostream& operator<<(std::ostream& os, const SystemOfEquations<T>& sys) {
         if (sys.get_size() > 0)
             os << m.get(row, sys.get_size() - 1);
         os << " )  ( ";
-        os << v.get(row) << " )";
+        os << v.get(row) << " )\n";
     }
     return os;
 }
