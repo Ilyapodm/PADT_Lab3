@@ -15,15 +15,16 @@ cd build && ctest --output-on-failure
 ./build/tests/my_tests --gtest_filter="DynamicArray*"
 
 ## Структура проекта
+```
 src/
 ├── CMakeLists.txt
 ├── array_sequence.hpp / .tpp
 ├── complex.hpp
 ├── diagonal_matrix.hpp / .tpp
 ├── dynamic_array.hpp / .tpp
+├── imatrix.hpp
 ├── ienumerable.hpp
 ├── ienumerator.hpp
-├── imatrix.hpp
 ├── math_types.hpp
 ├── matrix.hpp / .tpp
 ├── option.hpp
@@ -46,6 +47,7 @@ CMakeLists.txt
 main.cpp
 README.md
 SLAE_report.md
+```
 
 ## Архитектура
 ### Принцип подстановки Лисков (LSP)
@@ -90,7 +92,6 @@ IMatrix<T>             ← интерфейс
     │       └── Vector<T>         ← обертка для SystemOfEquations (вектор-столбец b)
     ├── TriangularMatrix<T>       ← своё хранение n*(n+1)/2
     ├── DiagonalMatrix<T>         ← хранит только диагональ DynamicArray(n)
-    ├── SparseMatrix<T>           ← DynamicArray<Triplet>
 ```
 
 Оператор `(i, j)` только для чтения реализован в самом интерфейсе и доступен всем потомкам при переопределении `get(i, j)`.

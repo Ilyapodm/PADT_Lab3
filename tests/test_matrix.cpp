@@ -30,6 +30,7 @@ TEST(MatrixConstructor, DefaultIsEmpty) {
 
 TEST(MatrixConstructor, ZeroSizeIsValid) {
     EXPECT_NO_THROW(Matrix<double>(0, 0));
+
 }
 
 TEST(MatrixConstructor, NegativeRowsThrows) {

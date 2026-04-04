@@ -23,7 +23,7 @@ public:
     void set_rhs(const Vector<T> &new_b);  // new_b's size must match A; doesn't reset cache
 
     // methods to solute the SLAE
-    Vector<T>* solve_gauss() const;
+    Vector<T>* solve_gauss() const;  //можно просто копию
     Vector<T>* solve_gauss_with_pivot(double tol = 1e-14) const;  
     Vector<T>* solve_plu(double tol = 1e-14) const;     
     

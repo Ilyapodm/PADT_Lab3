@@ -16,10 +16,6 @@
 #include "system_of_equations.hpp"
 #include "array_sequence.hpp"
 
-//TODO Разобраться в багах в эксперименте
-//TODO потыкать еще и посмотреть на фолбэки
-// TODO оформить эксперимент в таблицу
-// TODO ux в main (clear, больше менюё)
 // TODO сделать sparse matrix
 
 // ============================================================
@@ -42,7 +38,7 @@ static int read_int(const std::string& prompt) {
     int val;
     for (;;) {
         std::cout << prompt;
-        if (std::cin >> val) return val;
+        if (std::cin >> val) return val;  // 
         std::cout << "  [!] Invalid input, try again.\n";
         clear_input();
     }

@@ -5,6 +5,7 @@ add_executable(tests
     test_matrix.cpp
     #test_sparse_matrix.cpp
     test_square_matrix.cpp
+    test_system_of_equations.cpp
     test_triangular_matrix.cpp
     test_vector.cpp
 )

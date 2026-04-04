@@ -5,6 +5,6 @@
 template <typename T>
 class IEnumerable {
 public:
-    virtual ~IEnumerable() {};
-    virtual IEnumerator<T>* get_enumerator() const = 0;
+    virtual ~IEnumerable() {};  // TODO отдельная папка для файлов из 2 лабы)
+    virtual IEnumerator<T>* get_enumerator() const = 0;  // TODO можно возвращать копию
 };
