@@ -8,6 +8,7 @@
 
 #include "math_types.hpp"
 #include "imatrix.hpp"
+#include "imatrix_io.hpp"
 #include "matrix.hpp"
 #include "square_matrix.hpp"
 #include "vector.hpp"
