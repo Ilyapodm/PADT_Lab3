@@ -30,7 +30,9 @@ TEST(MatrixConstructor, DefaultIsEmpty) {
 
 TEST(MatrixConstructor, ZeroSizeIsValid) {
     EXPECT_NO_THROW(Matrix<double>(0, 0));
-
+    Matrix<double> m;
+    EXPECT_EQ(m.get_rows(), 0);
+    EXPECT_EQ(m.get_cols(), 0);
 }
 
 TEST(MatrixConstructor, NegativeRowsThrows) {

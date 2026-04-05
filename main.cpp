@@ -11,13 +11,12 @@
 #include "imatrix_io.hpp"
 #include "matrix.hpp"
 #include "square_matrix.hpp"
+#include "sparse_matrix.hpp"
 #include "vector.hpp"
 #include "triangular_matrix.hpp"
 #include "diagonal_matrix.hpp"
 #include "system_of_equations.hpp"
 #include "array_sequence.hpp"
-
-// TODO сделать sparse matrix
 
 // ============================================================
 // Types

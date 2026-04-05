@@ -66,7 +66,6 @@ int TriangularMatrix<T>::get_size() const {
  * operations
  *******************************************************************/
 
-// TODO убрать копипаст в оператор  ()
 template <typename T>
 void TriangularMatrix<T>::set(int i, int j, const T &value) {
     if (! in_bounds(i, j))
