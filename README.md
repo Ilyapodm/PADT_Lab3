@@ -32,6 +32,7 @@ src/
 ├── sparse_matrix.hpp / .tpp
 ├── square_matrix.hpp / .tpp
 ├── system_of_equations.hpp / .tpp
+├── system_of_equations_io.hpp
 ├── triangular_matrix.hpp / .tpp
 └── vector.hpp
 tests/

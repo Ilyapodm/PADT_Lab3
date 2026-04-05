@@ -10,6 +10,7 @@ add_library(matrix_lib INTERFACE)
 
 target_include_directories(matrix_lib INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/lab_2
     # Говорим CMake: "все, кто линкует seq_lib, автоматически получают
     # доступ к заголовкам из папки src/".
     # Благодаря этому в тестах и main.cpp можно писать просто:
