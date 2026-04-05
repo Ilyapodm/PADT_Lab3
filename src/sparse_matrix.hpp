@@ -44,6 +44,7 @@ private:
     int cols;
 
     static int checked_size(int rows, int cols, int count);
+    static void check_dimensions(int rows, int cols);
     bool in_bounds(int i, int j) const noexcept;
     int bin_search(int i, int j) const;  // returns the index of the element; -1 else
 };

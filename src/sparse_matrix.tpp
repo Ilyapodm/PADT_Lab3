@@ -14,7 +14,7 @@ SparseMatrix<T>::SparseMatrix() : data{}, rows{0}, cols{0} {}
 template <typename T>
 SparseMatrix<T>::SparseMatrix(int rows, int cols) : 
     data{},
-    rows{rows}, 
+    rows{(check_dimensions(rows, cols), rows)},  // use comma operator
     cols{cols} 
 {}
 
@@ -173,10 +173,16 @@ double SparseMatrix<T>::norm() const {
 // fallback: will cause misunderstanding.
 template <typename T>
 int SparseMatrix<T>::checked_size(int rows, int cols, int count) {
-    if (rows < 0 || cols < 0 || count < 0)
-        throw std::invalid_argument("SparseMatrix: rows, cols and count cannot be negative");
-
+    check_dimensions(rows, cols); 
+    if (count < 0)
+        throw std::invalid_argument("SparseMatrix: count cannot be negative");
     return count;
+}
+
+template <typename T>
+void SparseMatrix<T>::check_dimensions(int rows, int cols) {
+    if (rows < 0 || cols < 0)
+        throw std::invalid_argument("SparseMatrix: rows and cols cannot be negative");
 }
 
 template <typename T>

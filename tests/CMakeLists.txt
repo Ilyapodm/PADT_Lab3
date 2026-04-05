@@ -3,7 +3,7 @@ add_executable(tests
     test_dynamic_array.cpp
     test_diagonal_matrix.cpp
     test_matrix.cpp
-    #test_sparse_matrix.cpp
+    test_sparse_matrix.cpp
     test_square_matrix.cpp
     test_system_of_equations.cpp
     test_triangular_matrix.cpp
