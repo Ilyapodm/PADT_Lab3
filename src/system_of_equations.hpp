@@ -5,6 +5,8 @@
 #include "vector.hpp"
 #include "square_matrix.hpp"
 
+#define TOL 1e-14
+
 template <typename T>
 class SystemOfEquations {
 public:
@@ -23,8 +25,8 @@ public:
 
     // methods to solute the SLAE
     Vector<T>* solve_gauss() const;  //можно просто копию
-    Vector<T>* solve_gauss_with_pivot(double tol = 1e-14) const;  
-    Vector<T>* solve_plu(double tol = 1e-14) const;     
+    Vector<T>* solve_gauss_with_pivot(double tol = TOL) const;
+    Vector<T>* solve_plu(double tol = TOL) const;     
     
     // fabrics
     static SystemOfEquations<T> random(int n, unsigned seed = 42);

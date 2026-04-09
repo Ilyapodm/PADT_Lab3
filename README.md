@@ -17,18 +17,19 @@ cd build && ctest --output-on-failure
 ## Структура проекта
 ```
 src/
+├── lab_2/
+├──────── array_sequence.hpp / .tpp
+├──────── ienumerable.hpp
+├──────── ienumerator.hpp
+├──────── option.hpp
+├──────── sequence.hpp / .tpp
 ├── CMakeLists.txt
-├── array_sequence.hpp / .tpp
 ├── complex.hpp
 ├── diagonal_matrix.hpp / .tpp
 ├── dynamic_array.hpp / .tpp
 ├── imatrix.hpp
-├── ienumerable.hpp
-├── ienumerator.hpp
 ├── math_types.hpp
 ├── matrix.hpp / .tpp
-├── option.hpp
-├── sequence.hpp / .tpp
 ├── sparse_matrix.hpp / .tpp
 ├── square_matrix.hpp / .tpp
 ├── system_of_equations.hpp / .tpp
